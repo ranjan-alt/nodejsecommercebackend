@@ -1,1 +1,3 @@
 
+this is a example of relational database where in in products we are passing categories 
+rather than calling categories we are calling categories inside products database

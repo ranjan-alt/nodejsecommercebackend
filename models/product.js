@@ -31,7 +31,7 @@ const productSchema = mongoose.Schema({
     default: 0,
   },
   category: {
-    type: mongoose.Schema.types.objectiD,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     require: true,
   },
@@ -46,7 +46,7 @@ const productSchema = mongoose.Schema({
     default: 0,
   },
   numReviews: {
-    type: Boolean,
+    type: String,
     default: 0,
   },
   dateCreated: {
@@ -55,4 +55,5 @@ const productSchema = mongoose.Schema({
   },
 });
 
-exports.Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

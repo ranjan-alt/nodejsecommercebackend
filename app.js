@@ -15,10 +15,13 @@ const api = process.env.API_URL;
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
 const productsRouter = require("./routes/products");
+const categoriesRouter = require("./routes/categories");
 
 app.use(`${api}/products`, productsRouter);
+app.use(`${api}/categories`, categoriesRouter);
 
 const Product = require("./models/product");
+const categories = require("./models/category");
 
 //this connect method returns a promise and returns two methods ie then and error
 // if then it is success and fails then error
