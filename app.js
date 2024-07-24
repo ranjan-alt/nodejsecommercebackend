@@ -16,9 +16,11 @@ app.use(bodyParser.json());
 app.use(morgan("tiny"));
 const productsRouter = require("./routes/products");
 const categoriesRouter = require("./routes/categories");
+const userRoutes = require("./routes/users");
 
 app.use(`${api}/products`, productsRouter);
 app.use(`${api}/categories`, categoriesRouter);
+app.use(`${api}/users`, userRoutes);
 
 const Product = require("./models/product");
 const categories = require("./models/category");
