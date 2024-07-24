@@ -1,3 +1,12 @@
 
+types of databse concepts
 this is a example of relational database where in in products we are passing categories 
 rather than calling categories we are calling categories inside products database
+
+mongoose method for put mehtod where we have objcet id 
+mongoose.isValidObjectId()
+
+
+
+limit(count) if req.params.count is a string then to convert the count to string just add + 
+limit(+count)

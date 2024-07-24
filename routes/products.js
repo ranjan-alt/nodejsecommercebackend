@@ -3,13 +3,18 @@ const router = express.Router();
 
 const Product = require("../models/product");
 const Category = require("../models/category");
+const mongoose = require("mongoose");
 
 router.get(`/`, async (req, res) => {
   //we got since find method is returning a promise and i am sending response maybe this productList is not ready yet
   // to get off this error we have to use async await
   // if we want to display only few products then we use select method
   // const productList = await Product.find().select("name image -_id");
-  const productList = await Product.find().populate("category");
+  let filter = {};
+  if (req.query.categories) {
+    filter = { category: req.query.categories.split(",") };
+  }
+  const productList = await Product.find(filter).populate("category");
   // if any issue happens while getting productList
   if (!productList) {
     res.status(500).json({ success: false });
@@ -52,6 +57,9 @@ router.post(`/`, async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    res.status(400).send("invalid product id");
+  }
   const category = await Category.findById(req.body.category);
   if (!category) {
     res.status(400).send("invalid category");
@@ -90,6 +98,30 @@ router.delete("/:id", async (req, res) => {
   res
     .status(200)
     .json({ success: true, message: "Product deleted successfully" });
+});
+
+router.get("/get/count", async (req, res) => {
+  let productCount = await Product.countDocuments();
+  if (!productCount) {
+    res.status(400).json({ succes: false });
+  }
+  res.send({
+    productCount: productCount,
+  });
+});
+
+// we want to get featured products data
+router.get("/get/featured/:count", async (req, res) => {
+  let count = req.params.count ? req.params.count : 0;
+  let products = await Product.find({
+    isFeatured: true,
+  }).limit(+count);
+  if (!products) {
+    res.status(400).json({ succes: false });
+  }
+  res.send({
+    products: products,
+  });
 });
 
 module.exports = router;

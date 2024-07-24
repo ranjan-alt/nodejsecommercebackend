@@ -53,6 +53,17 @@ const productSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isFeatured: {
+    type: Boolean,
+  },
+});
+
+productSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+productSchema.set("toJSON", {
+  virtuals: true,
 });
 
 const Product = mongoose.model("Product", productSchema);
