@@ -14,7 +14,7 @@ const api = process.env.API_URL;
 //Middleware
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
-app.use(authJwt);
+app.use(authJwt());
 
 const productsRouter = require("./routes/products");
 const categoriesRouter = require("./routes/categories");
