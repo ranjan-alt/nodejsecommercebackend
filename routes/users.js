@@ -24,7 +24,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const {
+    let {
       name,
       email,
       passwordHash,
@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
       isAdmin,
     } = req.body;
     const hashedPassword = await bcrypt.hash(passwordHash, 10); //    // Create a new user instance
-    const newUser = new User({
+    let newUser = new User({
       name,
       email,
       passwordHash: hashedPassword,
@@ -83,6 +83,43 @@ router.post("/login", async (req, res) => {
     return res.status(200).send("password is wrong");
   }
   return res.status(200).send(user);
+});
+
+router.post("/register", (req, res) => {
+  let {
+    name,
+    email,
+    passwordHash,
+    street,
+    apartment,
+    city,
+    zip,
+    country,
+    phone,
+    isAdmin,
+  } = req.body;
+  let newUser = new User({
+    name: name,
+    email: email,
+    passwordHash: passwordHash,
+    street: street || "",
+    apartment: apartment || "",
+    city: city || "",
+    zip: zip || "",
+    country: country || "",
+    phone: phone,
+    isAdmin: isAdmin || false,
+  });
+  newUser
+    .save()
+    .then((savedUser) => {
+      console.log("User saved successfully:", savedUser);
+      res.status(201).json(savedUser); // Respond with saved user object
+    })
+    .catch((error) => {
+      console.error("Error saving user:", error);
+      res.status(500).json({ error: error.message }); // Handle error response
+    });
 });
 
 module.exports = router;
